@@ -1,8 +1,8 @@
-# *Laroutine*
+# <img src="docs/logo.svg" alt="Laroutine" width="290">
+
+![Laroutine weekly schedule](docs/screenshot.png)
 
 Laroutine is a responsive dashboard for planning a weekly routine around a daily schedule. It is a single-user, local-first app: all data lives in one SQLite file.
-
-**Logo**: shown by the `Logo` component (`components/logo.tsx`), which swaps `public/laroutine-black.png` (light theme) and `public/laroutine-white.png` (dark theme) with CSS. To change it, overwrite those two PNGs (same 5:1 aspect ratio, ideally at least 2x the displayed height of 28px).
 
 ## Features
 
@@ -76,9 +76,6 @@ Everything is stored in the one SQLite file (`./data/laroutine.db` from source, 
 ## Design notes
 
 Custom category colors are rendered exactly as chosen in both themes (presets are theme-tuned). Very light or very dark custom colors get a subtle outline on tiles, swatches and chart slices so they stay visible; the stored value is never changed. The database upgrades itself on start (migration 3 rebuilds `categories`; existing data is kept).
-
-In light mode the brand's secondary orange `#F6820E` is replaced by darker oranges (`#a85200` for text, `#d9700a` for accents) to meet WCAG contrast requirements. Dark mode uses the exact brand colors: `#1F1F1F` surfaces and `#F6820E` actions.
-
 ## Contributing / Architecture
 
 Issues and pull requests are welcome at <https://github.com/FrancisBernard34/laroutine/issues>. Before opening a pull request, run `npm test`, `npx tsc --noEmit`, `npm run lint` and `npm run build`. For how the code is organized (data model and migrations, server actions, i18n, time handling, the schedule layout algorithm, theming and Docker notes), read [docs/architecture.md](docs/architecture.md).

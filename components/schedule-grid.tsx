@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "reac
 import { Plus } from "lucide-react"
 import { Tabs } from "radix-ui"
 
+import { PageHeader } from "@/components/page-header"
 import { TaskCard } from "@/components/task-card"
 import { TaskDialog } from "@/components/task-dialog"
 import { TaskTooltip } from "@/components/task-tooltip"
@@ -37,6 +38,8 @@ const SHORT_BELOW_REM = 2.5
 const MIN_CARD_REM = 1
 
 export function ScheduleGrid({
+  title,
+  description,
   tasks,
   categories,
   workspace,
@@ -48,6 +51,8 @@ export function ScheduleGrid({
   workspace: Workspace
   weekStart: WeekStart
   timezone: string | null
+  title: string
+  description?: string
 }) {
   const { t } = useT()
   const [dialog, setDialog] = useState<DialogState>({ open: false, task: null })
@@ -139,8 +144,10 @@ export function ScheduleGrid({
 
   return (
     <TooltipProvider delayDuration={TOOLTIP_DELAY_MS} skipDelayDuration={0}>
-      <div className="grid gap-4">
-        <div>
+      <PageHeader
+        title={title}
+        description={description}
+        action={
           <Button
             ref={newButtonRef}
             onClick={() => {
@@ -151,8 +158,9 @@ export function ScheduleGrid({
             <Plus className="size-4" aria-hidden />
             {t("tasks.new")}
           </Button>
-        </div>
-
+        }
+      />
+      <div className="grid gap-4">
         <Tabs.Root
           value={String(activeDay)}
           onValueChange={(v) => setPicked(Number(v))}

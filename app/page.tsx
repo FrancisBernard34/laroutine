@@ -1,4 +1,3 @@
-import { PageHeader } from "@/components/page-header"
 import { ScheduleGrid } from "@/components/schedule-grid"
 import { listCategories } from "@/lib/queries/categories"
 import { getSettings } from "@/lib/queries/settings"
@@ -14,8 +13,9 @@ export default function SchedulePage() {
   const settings = getSettings()
   return (
     <>
-      <PageHeader title={t("grid.title")} description={t("grid.description")} />
       <ScheduleGrid
+        title={t("grid.title")}
+        description={t("grid.description")}
         // Remount per workspace so dialog/tab state never leaks across workspaces.
         key={workspace.id}
         tasks={listTasks(workspace.id)}
