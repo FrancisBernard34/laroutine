@@ -1,0 +1,12 @@
+services:
+  laroutine:
+    build: .
+    image: laroutine
+    ports:
+      - "3000:3000"
+    volumes:
+      - laroutine-data:/data
+    restart: unless-stopped
+
+volumes:
+  laroutine-data:

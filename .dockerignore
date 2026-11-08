@@ -1,0 +1,31 @@
+node_modules
+.next
+data
+*.db
+*.db-journal
+out
+build
+coverage
+.git
+.gitignore
+.env*
+*.log
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+# docker files themselves
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# non-application docs / tooling
+docs
+README.md
+AGENTS.md
+CLAUDE.md
+.claude
+project-specs
+project-tasks
+project-docs
+laroutine-*-tmp

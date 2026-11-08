@@ -1,0 +1,359 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* --------------------------------------------------------------------------
+   Tailwind theme mapping (utilities: bg-background, text-highlight, bg-cat-teal ...)
+   -------------------------------------------------------------------------- */
+@theme inline {
+  /* shadcn semantic colors */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Laroutine additions */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-highlight: var(--highlight);
+  --color-grid-line: var(--grid-line);
+  --color-grid-line-strong: var(--grid-line-strong);
+  --color-grid-header: var(--grid-header);
+  --color-grid-today: var(--grid-today);
+
+  /* Category palette (stored in DB as the key: orange|red|pink|violet|blue|teal|green|gray) */
+  --color-cat-orange: var(--cat-orange);
+  --color-cat-red: var(--cat-red);
+  --color-cat-pink: var(--cat-pink);
+  --color-cat-violet: var(--cat-violet);
+  --color-cat-blue: var(--cat-blue);
+  --color-cat-teal: var(--cat-teal);
+  --color-cat-green: var(--cat-green);
+  --color-cat-gray: var(--cat-gray);
+  --color-cat-foreground: var(--cat-foreground);
+
+  /* Radius scale (shadcn) */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* --------------------------------------------------------------------------
+   Theme-independent tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Brand (fixed) */
+  --brand-primary: #1f1f1f;
+  --brand-secondary: #f6820e;
+
+  --radius: 0.625rem;
+
+  /* Task card: 20% icon block / 80% name block. If 20% is too narrow the
+     icon block is floored at --task-icon-min. */
+  --task-icon-ratio: 20%;
+  --task-icon-min: 1.75rem; /* 28px */
+  --task-card-radius: 0.5rem;
+  --task-card-gap: 2px; /* visual gap inset between stacked/side-by-side cards */
+
+  /* Schedule grid geometry */
+  --grid-gutter-w: 4.75rem; /* time-label column; fits "10:30 PM" in en-US */
+  --grid-day-min-w: 9rem; /* min day column width on md+ before horizontal scroll */
+  --grid-header-h: 2.75rem;
+  /* Row height per slot. The grid sets --grid-row-h inline from slot_minutes
+     (60 -> --grid-row-h-60, 30 -> --grid-row-h-30). */
+  --grid-row-h-60: 4rem;
+  --grid-row-h-15: 1.75rem;
+  --task-card-min-h: 1rem; /* floor for the drawn height = a 15-min task on the 60-min grid (tightest valid case), so a card never exceeds its true time span */
+  --grid-row-h-30: 2.5rem;
+
+  /* Tooltip (300ms open delay; value mirrored in lib/constants.ts) */
+  --tooltip-delay: 300ms;
+  --tooltip-max-w: 18rem;
+  --tooltip-gif-max-h: 10rem;
+}
+
+/* --------------------------------------------------------------------------
+   LIGHT theme (switchable). `.light` re-scopes the light tokens on a subtree (used by the
+   color picker preview to show a tile on the light surface while the app is dark).
+   -------------------------------------------------------------------------- */
+:root,
+.light {
+  --background: #fafaf9;
+  --foreground: #1f1f1f;
+  --card: #ffffff;
+  --card-foreground: #1f1f1f;
+  --popover: #ffffff;
+  --popover-foreground: #1f1f1f;
+
+  --primary: #1f1f1f; /* brand primary = action in light mode */
+  --primary-foreground: #fafaf9;
+  --secondary: #f3f1ee;
+  --secondary-foreground: #1f1f1f;
+  --muted: #f3f1ee;
+  --muted-foreground: #6b6b6b;
+  --accent: #fde9d3; /* orange tint: hover/selected background */
+  --accent-foreground: #1f1f1f;
+  --destructive: #c62828;
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e2dd;
+  --input: #d6d2cb;
+  --ring: #d9700a; /* >= 3:1 on white */
+
+  --highlight: #a85200; /* orange used AS TEXT on light surfaces */
+
+  --chart-1: #e07000;
+  --chart-2: #0284c7;
+  --chart-3: #7c3aed;
+  --chart-4: #059669;
+  --chart-5: #db2777;
+
+  --sidebar: #f4f2ef;
+  --sidebar-foreground: #1f1f1f;
+  --sidebar-primary: #1f1f1f;
+  --sidebar-primary-foreground: #fafaf9;
+  --sidebar-accent: #e9e5df;
+  --sidebar-accent-foreground: #1f1f1f;
+  --sidebar-border: #e5e2dd;
+  --sidebar-ring: #d9700a;
+
+  --grid-line: #ece9e4;
+  --grid-line-strong: #d6d2cb;
+  --grid-header: #f4f2ef;
+  --grid-today: color-mix(in oklab, var(--brand-secondary) 12%, transparent);
+
+  /* Category fills (icon block + tint source). Foreground = icon color on the fill. */
+  --cat-orange: #d9700a;
+  --cat-red: #dc2626;
+  --cat-pink: #db2777;
+  --cat-violet: #7c3aed;
+  --cat-blue: #2563eb;
+  --cat-teal: #0d9488;
+  --cat-green: #16a34a;
+  --cat-gray: #6b7280;
+  --cat-foreground: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   DARK theme (DEFAULT). Class `.dark` is set on <html> by next-themes.
+   Page #141414 < brand primary #1F1F1F (cards, sidebar) < raised #2A2A2A.
+   -------------------------------------------------------------------------- */
+.dark {
+  --background: #141414;
+  --foreground: #f5f5f4;
+  --card: #1f1f1f; /* brand primary */
+  --card-foreground: #f5f5f4;
+  --popover: #262626;
+  --popover-foreground: #f5f5f4;
+
+  --primary: #f6820e; /* brand secondary = action in dark mode */
+  --primary-foreground: #1f1f1f; /* about 6.4:1 on the orange */
+  --secondary: #2a2a2a;
+  --secondary-foreground: #f5f5f4;
+  --muted: #2a2a2a;
+  --muted-foreground: #a3a3a3; /* about 6.5:1 on #1F1F1F */
+  --accent: #2f2f2f;
+  --accent-foreground: #f5f5f4;
+  --destructive: #f87171;
+  --destructive-foreground: #1f1f1f;
+
+  --border: #333333;
+  --input: #3a3a3a;
+  --ring: #f6820e;
+
+  --highlight: #f6820e; /* orange text is fine on dark surfaces */
+
+  --chart-1: #f6820e;
+  --chart-2: #38bdf8;
+  --chart-3: #a78bfa;
+  --chart-4: #34d399;
+  --chart-5: #f472b6;
+
+  --sidebar: #1f1f1f;
+  --sidebar-foreground: #f5f5f4;
+  --sidebar-primary: #f6820e;
+  --sidebar-primary-foreground: #1f1f1f;
+  --sidebar-accent: #2a2a2a;
+  --sidebar-accent-foreground: #f5f5f4;
+  --sidebar-border: #333333;
+  --sidebar-ring: #f6820e;
+
+  --grid-line: #262626;
+  --grid-line-strong: #3a3a3a;
+  --grid-header: #1a1a1a;
+  --grid-today: color-mix(in oklab, var(--brand-secondary) 6%, transparent);
+
+  --cat-orange: #f6820e;
+  --cat-red: #f87171;
+  --cat-pink: #f472b6;
+  --cat-violet: #a78bfa;
+  --cat-blue: #60a5fa;
+  --cat-teal: #2dd4bf;
+  --cat-green: #4ade80;
+  --cat-gray: #9ca3af;
+  --cat-foreground: #1f1f1f;
+}
+
+/* --------------------------------------------------------------------------
+   Base + small utilities
+   -------------------------------------------------------------------------- */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+/* Task card: two blocks, 20% / 80%. Set --cat inline: style={{ "--cat": "var(--cat-teal)" }}
+   Markup: <button class="task-card"><span class="task-card-icon">icon</span><span class="task-card-name">name</span></button> */
+@utility task-card {
+  display: grid;
+  grid-template-columns: max(var(--task-icon-min), var(--task-icon-ratio)) minmax(0, 1fr);
+  align-items: stretch;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: var(--task-card-radius);
+  background: color-mix(in oklab, var(--cat, var(--cat-gray)) 16%, var(--card));
+  color: var(--card-foreground);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--cat-ring, none); /* custom colors only: outline so #fff / #000 cards stay visible */
+}
+@utility task-card-icon {
+  display: grid;
+  place-items: center;
+  background: var(--cat, var(--cat-gray));
+  color: var(--cat-foreground);
+  box-shadow: var(--cat-ring, none); /* custom colors only: keeps #fff / #000 visible */
+}
+/* Narrow cards (multi-lane clusters in small day columns): the 20% rule cannot hold, so the icon
+   becomes a thin strip on top and the name gets the full width below it (the "adjust if 20% is
+   too much" allowance). Wide/single-lane cards keep 20/80. Host = positioned wrapper. */
+@utility task-card-host {
+  container-type: inline-size;
+  container-name: taskcard;
+}
+@container taskcard (max-width: 5rem) {
+  .task-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 1.25rem minmax(0, 1fr);
+  }
+  .task-card .task-card-icon svg {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .task-card .task-card-name {
+    padding: 0.125rem 0.25rem;
+    font-size: 0.6875rem;
+    line-height: 1.15;
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+}
+/* Very short cards (under 2rem drawn, e.g. 15 min on a 60-min grid = exactly 1rem): one line, small
+   icon, minimal padding. The host keeps a 1px inset, so a 1rem host gives a 14px clickable card. */
+.task-card.task-card-compact {
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  grid-template-rows: none;
+  border-radius: 0.25rem;
+}
+.task-card.task-card-compact .task-card-icon svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+.task-card.task-card-compact .task-card-name {
+  align-items: center;
+  padding: 0 0.25rem;
+  font-size: 0.625rem;
+  line-height: 1.2;
+}
+.task-card.task-card-compact .task-card-name > span {
+  display: block !important;
+  -webkit-line-clamp: 1 !important;
+  line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Narrow AND short (under 2.5rem drawn): never show a half-clipped stacked layout, use compact. */
+@container taskcard (max-width: 5rem) {
+  .task-card.task-card-short {
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+  .task-card.task-card-short .task-card-name {
+    align-items: center;
+    padding: 0 0.25rem;
+    font-size: 0.6875rem;
+    line-height: 1.2;
+  }
+  .task-card.task-card-short .task-card-name > span {
+    display: block !important;
+    -webkit-line-clamp: 1 !important;
+    line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@utility task-card-name {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+/* Fonts: Geist via the `geist` package (CSS variables set in app/layout.tsx) */
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-heading: var(--font-sans);
+}
